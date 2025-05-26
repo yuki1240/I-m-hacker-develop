@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c48ddaf38834445da6c7b20f98b44aa, type: 3}
+  m_Name: EventCard10
+  m_EditorClassIdentifier: 
+  name: Ctl+Z
+  cardSprite: {fileID: 21300000, guid: f684b36358a3b6a44b993847a7dda8b5, type: 3}
+  cardType: 3
+  explanation: "\u30AB\u30FC\u30C9\u30921\u679A\u5F15\u304D\u3001\u597D\u304D\u306A\u624B\u672D\u3092\uFF11\u679A\u5C71\u672D\u306E\u4E0A\u306B\u4E57\u305B\u308B\u3002"
+  meaning: 
+  attackToEnemy: 0
+  attackToFriend: 0
+  heal: 0
+  eventCardType: 10

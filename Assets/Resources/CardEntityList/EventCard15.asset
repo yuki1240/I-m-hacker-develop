@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c48ddaf38834445da6c7b20f98b44aa, type: 3}
+  m_Name: EventCard15
+  m_EditorClassIdentifier: 
+  name: "\u30B9\u30B1\u30FC\u30EB\u30A2\u30C3\u30D7"
+  cardSprite: {fileID: 21300000, guid: 0379aaf6660cd1643b3bd70f088cd48a, type: 3}
+  cardType: 3
+  explanation: "\u3053\u306E\u30BF\u30FC\u30F3\u3001\u653B\u6483+10\u3002"
+  meaning: "\u30B9\u30B1\u30FC\u30EB\u30A2\u30C3\u30D7\u3068\u306F\u3001\u30B5\u30FC\u30D0\u305D\u306E\u3082\u306E\u3092\u5897\u5F37\u3059\u308B\u3053\u3068\u306B\u3088\u3063\u3066\u51E6\u7406\u80FD\u529B\u3092\u5411\u4E0A\u3059\u308B\u3053\u3068\u3060\u3002\u5782\u76F4\u30B9\u30B1\u30FC\u30EB\uFF08\u540D\u8A5E\u306E\u6642\u306F\u5782\u76F4\u30B9\u30B1\u30FC\u30E9\u30D3\u30EA\u30C6\u30A3\uFF09\u3068\u547C\u3070\u308C\u308B\u3053\u3068\u3082\u3042\u308B\u3002\u5178\u578B\u7684\u306B\u306F\u3001SMP\uFF08\u5BFE\u79F0\u578B\u30DE\u30EB\u30C1\u30D7\u30ED\u30BB\u30C3\u30B5\uFF09\u306B\u304A\u3044\u3066\u30D7\u30ED\u30BB\u30C3\u30B5\u3092\u8FFD\u52A0\u3059\u308B\u3053\u3068\u3084\u3001\u30D7\u30ED\u30BB\u30C3\u30B5\u305D\u306E\u3082\u306E\u3092\u9AD8\u6027\u80FD\u30E2\u30C7\u30EB\u3067\u7F6E\u304D\u63DB\u3048\u308B\u3053\u3068\u3092\u6307\u3059\u3002"
+  attackToEnemy: 10
+  attackToFriend: 0
+  heal: 0
+  eventCardType: 15

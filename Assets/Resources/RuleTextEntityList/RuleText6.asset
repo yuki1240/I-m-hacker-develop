@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a7f09a828d85bb4fb298e6c978d2012, type: 3}
+  m_Name: RuleText6
+  m_EditorClassIdentifier: 
+  ruleText: "\uFF13\u6587\u5B57\u306E\u30D1\u30B9\u30EF\u30FC\u30C9\u304C\u5206\u304B\u308C\u3070\u4E00\u767A\u9006\u8EE2\u3082\u53EF\u80FD\u306A\u30AB\u30FC\u30C9\u30B2\u30FC\u30E0\u3067\u3059\u3002"
