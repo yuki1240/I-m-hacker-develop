@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.EventSystems;
+using System;
 
 public class PasswordSelectionCardManager : MonoBehaviour
 {
@@ -15,9 +16,18 @@ public class PasswordSelectionCardManager : MonoBehaviour
     [SerializeField] Button submitButton;
     [SerializeField] GameManager gameManager;
 
+    //フィールドにパスワードを生成
+    [SerializeField] Transform playerPasswordFieldTransform;
+    // [SerializeField] Transform enemyPasswordFieldTransform;
+
+    // パスワードカードのプレハブ
+    [SerializeField] PasswordCardController passwordCardPrefab;
+
     private GameObject[] tmpCard = new GameObject[3];
     private Dictionary<string, GameObject> cardDictionary = new Dictionary<string, GameObject>();
     private List<GameObject> spawnedCards = new List<GameObject>();
+    private String[] spawnKeyWords = new String[3];
+    private int[] cardIds = new int[3];
 
     // 1つ前の入力値
     private string previousInput = "";
@@ -71,7 +81,7 @@ public class PasswordSelectionCardManager : MonoBehaviour
     }
 
     /// <summary>
-    /// クリック時の処理
+    /// 「決定」ボタンクリック時の処理
     /// </summary>
     public void OnSubmit()
     {
@@ -79,6 +89,73 @@ public class PasswordSelectionCardManager : MonoBehaviour
         if (inputField.text.Length == 3)
         {
             gameManager.InputCorrectPasswordflag = true;
+
+            // ここでパスワードを文字列として取得できた
+            Debug.Log($"spawnKeyWords.[0]: {spawnKeyWords[0]}");
+            Debug.Log($"spawnKeyWords.[1]: {spawnKeyWords[1]}");
+            Debug.Log($"spawnKeyWords.[2]: {spawnKeyWords[2]}");
+
+            int cardType = 5;
+
+            // プレハブを生成し、取得した文字でプレハブを初期化していけばOKじゃね？？
+            SeachCardId();
+            for (int i = 0; i < spawnKeyWords.Length; i++)
+            {
+                Debug.Log($"cardIds[i]: {cardIds[i]}, spawnKeyWords[{i}]: {spawnKeyWords[i]}");
+
+                PasswordCardController passwordCard = Instantiate(passwordCardPrefab);
+                passwordCard.transform.SetParent(playerPasswordFieldTransform, false);
+                passwordCard.Init(cardType, cardIds[i], true);
+                passwordCard.TurnDown();
+                passwordCard.SetCanViewHP(true);
+                passwordCard.IsNotSelectableCard(false);
+            }
+        }
+    }
+
+    /// <summary>
+    /// カードIDを取得する
+    /// </summary>
+    private void SeachCardId()
+    {
+        for (int i = 0; i < spawnKeyWords.Length; i++)
+        {
+            switch (spawnKeyWords[i])
+            {
+                case "あ":
+                    cardIds[i] = 1;
+                    break;
+                case "か":
+                    cardIds[i] = 2;
+                    break;
+                case "さ":
+                    cardIds[i] = 3;
+                    break;
+                case "た":
+                    cardIds[i] = 4;
+                    break;
+                case "な":
+                    cardIds[i] = 5;
+                    break;
+                case "は":
+                    cardIds[i] = 6;
+                    break;
+                case "ま":
+                    cardIds[i] = 7;
+                    break;
+                case "や":
+                    cardIds[i] = 8;
+                    break;
+                case "ら":
+                    cardIds[i] = 9;
+                    break;
+                case "わ":
+                    cardIds[i] = 10;
+                    break;
+                default:
+                    Debug.LogError($"パスワード設定の例外エラー");
+                    break;
+            }
         }
     }
 
@@ -138,6 +215,8 @@ public class PasswordSelectionCardManager : MonoBehaviour
         if (inputText.Length == 0) return;
         if (previousInput == inputText) return;
 
+        spawnKeyWords = new String[3];
+
         previousInput = inputText;
 
         List<string> cardNames = new List<string>();
@@ -150,6 +229,8 @@ public class PasswordSelectionCardManager : MonoBehaviour
             {
                 // 先頭文字に対応するカード名を取得
                 string row = kanaGroups[c];
+                spawnKeyWords[i] = row;
+
                 // 重複を避けるため、リストに含まれていない場合のみ追加
                 if (!cardNames.Contains(row)) cardNames.Add(row);
             }
