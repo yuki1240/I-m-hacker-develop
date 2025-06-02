@@ -44,7 +44,7 @@ public class DetailPanelManager : MonoBehaviour
     /// <param name="card"></param>
     public IEnumerator ShowDetailPanel(CardController card)
     {
-        Debug.Log($"call");
+        Debug.Log($"call ShowDetailPanel 詳細パネルを表示");
         // もしプレイヤーのターンだったら
         if (GameManager.Instance.IsPlayerTurn)
         {
@@ -55,7 +55,7 @@ public class DetailPanelManager : MonoBehaviour
             // マリガンフェーズの場合は「捨てる」ボタンを表示
             if (isMulliganPhase)
             {
-                Debug.Log($"mulligan");
+                Debug.Log($"Mulligan in ShowDetailPanel");
 
                 cardDetailPanel.SetActive(true);
 

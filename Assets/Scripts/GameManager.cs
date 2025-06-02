@@ -1286,10 +1286,10 @@ public class GameManager : MonoBehaviour
             //     }
             yield return new WaitForSeconds(3);
             int num = UnityEngine.Random.Range(0, selectableCardList.Length);
-            Debug.Log((num + 1).ToString() + "番目のカードを選択");
             NowSelectingCard = selectableCardList[num];
         }
 
+        // 選択したカードを選択済みにする
         foreach (CardController card in selectableCardList)
         {
             card.IsNotSelectableCard(true);
@@ -1302,27 +1302,17 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public IEnumerator SelectPasswordCard()
     {
-        Debug.Log($"SelectPasswordCard");
         for (int i = 0; i < Define.passwordLength; i++)
         {
             CardController[] playerHandCardList = GetPlayerHands(true);
             CardController[] selectablePasswordCardList = GetSelectableCardList(playerHandCardList);
-            // messageLogManager.ShowLog("プレイヤーの選択可能なカード数 : " + selectablePasswordCardList.Length.ToString());
-            // messageLogManager.ShowLog("残りの選択数 : " + (Define.passwordLength - i).ToString());
             yield return StartCoroutine(SelectCard(selectablePasswordCardList));
             PasswordCardController nowSelectingPasswordCard = (PasswordCardController)NowSelectingCard;
             SetPasswordCardToField(nowSelectingPasswordCard);
-            // messageLogManager.ShowLog(nowSelectingPasswordCard.Model.Name + "カードを選択");
             yield return new WaitForSeconds(2.0f);
         }
-        Debug.Log($"SelectPasswordCard End");
         DestroyPlayerHandCard(IsPlayerTurn);
-
-        Debug.Log($"SelectPasswordCard End");
     }
-
-
-    // 指定したパスワードカードをフィールド上にセットする
 
 
 
@@ -1352,7 +1342,6 @@ public class GameManager : MonoBehaviour
     {
         messageLogManager.ShowLog("相手がパスワードを設定中…");
         int passwordID = UnityEngine.Random.Range(0, Define.enemyPasswordNum) + 1;
-        Debug.Log(passwordID);
         EnemyPasswordEntity enemyPasswordEntity = Resources.Load<EnemyPasswordEntity>("EnemyPasswordEntityList/EnemyPassword" + passwordID);
         enemy.Password = enemyPasswordEntity.password;
         for (int i = 0; i < Define.passwordLength; i++)
@@ -1467,6 +1456,7 @@ public class GameManager : MonoBehaviour
                 yield break;
             }
 
+            // ここでイベント終了ボタンを表示している
             if (IsPlayerTurn)
             {
                 if (i < Define.selectableCardNum)
@@ -1475,10 +1465,9 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            Debug.Log(NowSelectingCard);
             yield return StartCoroutine(SelectCard(selectableEventPhaseCardList));
-            Debug.Log(NowSelectingCard);
 
+            // ここでイベント終了ボタンを非表示している
             if (IsPlayerTurn && phaseEndButton.activeSelf)
             {
                 SetPhaseEndButtonActive(false);
@@ -1547,7 +1536,6 @@ public class GameManager : MonoBehaviour
                 yield break;
             }
             CardController selectedBruteForceCard = NowSelectingCard;
-            Debug.Log(selectedBruteForceCard.Model.Name);
             //選択したカードの処理
             yield return StartCoroutine(selectedBruteForceCard.UseCard());
             num--;
@@ -1621,7 +1609,6 @@ public class GameManager : MonoBehaviour
     public StarCardController GetStarCard()
     {
         StarCardController[] starCardList = starCardFieldTransform.GetComponentsInChildren<StarCardController>();
-        Debug.Log(starCardList.Length);
         if (starCardList.Length <= 0)
         {
             return null;
@@ -1645,7 +1632,6 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public CardController[] GetUsedCardList()
     {
-        Debug.Log($"GetUsedCardList");
         return usedCardFieldTransform.GetComponentsInChildren<CardController>();
     }
 
@@ -1785,7 +1771,6 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void SetUsedCardToUsedCardField(CardController usedCard)
     {
-        Debug.Log($"SetUsedCardToUsedCardField");
         usedCard.transform.SetParent(usedCardFieldTransform);
         if (!usedCard.Model.IsPlayerCard)
         {
@@ -1805,7 +1790,6 @@ public class GameManager : MonoBehaviour
         usedCardFieldTransform.gameObject.SetActive(true);
         yield return StartCoroutine(SelectCard(usedCardList));
         usedCardFieldTransform.gameObject.SetActive(false);
-        Debug.Log(NowSelectingCard);
         CardController selectedCard = NowSelectingCard;
         cardType = (int)selectedCard.Model.CardType;
         switch (selectedCard.Model.CardType)
@@ -1889,8 +1873,6 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void AddCardToCardDeck(CardController card)
     {
-        Debug.Log($"AddCardToCardDeck");
-
         int cardType;
         int cardID;
 
@@ -1914,7 +1896,6 @@ public class GameManager : MonoBehaviour
         }
         cardDeck.Add(new Card(cardType, cardID));
         Destroy(card.gameObject);
-        Debug.Log(card);
     }
 
     /// <summary>
@@ -2149,12 +2130,10 @@ public class GameManager : MonoBehaviour
         //山札のカードを選択
         yield return StartCoroutine(SelectCard(deckCardList));
         deckCardFieldTransform.gameObject.SetActive(false);
-        Debug.Log(NowSelectingCard);
         CardController selectedCard = NowSelectingCard;
         //選択したカードを山札から削除
         int num = Array.IndexOf(deckCardList, selectedCard);
         DeckDebug(selectedCard);
-        Debug.Log("カードの種類 : " + cardDeck[num].cardType + " " + "カードID : " + cardDeck[num].cardID);
         cardDeck.RemoveAt(num);
         //選択したカードを自分の手札に移動
         SetCardToPlayerHand(selectedCard);
@@ -2197,7 +2176,6 @@ public class GameManager : MonoBehaviour
                 cardID = 0;
                 break;
         }
-        Debug.Log("カードの種類 : " + cardType + " " + "カードID : " + cardID);
     }
 
     /// <summary>
@@ -2702,11 +2680,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void DeckReset()
     {
-        Debug.Log($"DeckReset デッキの枚数 : {cardDeck.Count}");
         CardController[] usedCardList = GetUsedCardList();
         foreach (CardController card in usedCardList)
         {
-            Debug.Log($"使用済みカード : {card.Model.Name}");
             AddCardToCardDeck(card);
         }
         ShuffleDeck(cardDeck);

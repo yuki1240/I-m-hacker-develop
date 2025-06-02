@@ -90,19 +90,13 @@ public class PasswordSelectionCardManager : MonoBehaviour
         {
             gameManager.InputCorrectPasswordflag = true;
 
-            // ここでパスワードを文字列として取得できた
-            Debug.Log($"spawnKeyWords.[0]: {spawnKeyWords[0]}");
-            Debug.Log($"spawnKeyWords.[1]: {spawnKeyWords[1]}");
-            Debug.Log($"spawnKeyWords.[2]: {spawnKeyWords[2]}");
-
+            // "5"はパスワードカードを示す
             int cardType = 5;
 
             // プレハブを生成し、取得した文字でプレハブを初期化していけばOKじゃね？？
             SeachCardId();
             for (int i = 0; i < spawnKeyWords.Length; i++)
             {
-                Debug.Log($"cardIds[i]: {cardIds[i]}, spawnKeyWords[{i}]: {spawnKeyWords[i]}");
-
                 PasswordCardController passwordCard = Instantiate(passwordCardPrefab);
                 passwordCard.transform.SetParent(playerPasswordFieldTransform, false);
                 passwordCard.Init(cardType, cardIds[i], true);
