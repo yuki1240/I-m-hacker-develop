@@ -206,7 +206,14 @@ public class PasswordSelectionCardManager : MonoBehaviour
     public void OnTextEdit(string text)
     {
         string inputText = text.Trim();
-        if (inputText.Length == 0) return;
+        if (inputText.Length == 0)
+        {
+            // 入力が空の場合はカードを初期状態に戻す
+            SetInitialCards();
+            previousInput = "";
+            return;
+        }
+
         if (previousInput == inputText) return;
 
         spawnKeyWords = new String[3];
