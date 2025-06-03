@@ -205,20 +205,27 @@ public class PasswordSelectionCardManager : MonoBehaviour
     /// </summary>
     public void OnTextEdit(string text)
     {
+        Debug.Log($"previousInput.Length: {previousInput.Length}, inputText.Length: {text.Length}");
+
         string inputText = text.Trim();
-        if (inputText.Length == 0)
+        if (previousInput == inputText) return;
+
+        // 入力文字が前回よりも少ないかどうかのbool値を取得
+        bool isShorterThanLastInput = inputText.Length < previousInput.Length;
+
+        // 入力文字が減った（削除された）場合、カードを裏返す処理
+        if (isShorterThanLastInput)
         {
-            // 入力が空の場合はカードを初期状態に戻す
-            SetInitialCards();
-            previousInput = "";
+            Debug.Log($"call {inputText.Length}");
+            for (int i = inputText.Length; i < spawnedCards.Count && i < 3; i++)
+            {
+                spawnedCards[i].GetComponent<PasswordSelectionCard>().HiddenImage();
+            }
+            previousInput = inputText;
             return;
         }
 
-        if (previousInput == inputText) return;
-
         spawnKeyWords = new String[3];
-
-        previousInput = inputText;
 
         List<string> cardNames = new List<string>();
 
@@ -246,58 +253,49 @@ public class PasswordSelectionCardManager : MonoBehaviour
             return;
         }
 
-        UpdateCards(cardNames);
+        UpdateCards(cardNames, inputText.Length);
+        previousInput = inputText;
     }
 
     /// <summary>
     /// カードを更新する
     /// </summary>
     /// <param name="cardNames"></param>
-    private void UpdateCards(List<string> cardNames)
+    private void UpdateCards(List<string> cardNames, int inputTextLength)
     {
-        // 既存のカードを削除
-        foreach (var card in spawnedCards) Destroy(card);
+        Debug.Log($"文字が増えたよ！: {cardNames.Count}");
+
+        // 既存のカードを必要に応じて削除
+        for (int i = 0; i < spawnedCards.Count; i++)
+        {
+            if (i > inputTextLength) continue;
+            Destroy(spawnedCards[i]);
+        }
+
         spawnedCards.Clear();
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < inputTextLength; i++)
         {
+            Debug.Log($"{i}回目のループ");
             if (i < cardNames.Count && cardDictionary.ContainsKey(cardNames[i]))
             {
                 tmpCard[i] = Instantiate(cardDictionary[cardNames[i]], cardPositions[i]);
                 PasswordSelectionCard cardScript = tmpCard[i].GetComponent<PasswordSelectionCard>();
 
-                // PasswordSelectionCard が見つからない場合はエラーログを出力
-                if (cardScript != null)
-                {
-                    // 1フレーム待機してからカードを裏返す
-                    StartCoroutine(DelayedFlip(cardScript));
-                }
-
+                cardScript.ShowImage();
                 spawnedCards.Add(tmpCard[i]);
             }
-            else
-            {
-                tmpCard[i] = Instantiate(cardDictionary["あ"], cardPositions[i]);
-                PasswordSelectionCard cardScript = tmpCard[i].GetComponent<PasswordSelectionCard>();
-                if (cardScript != null)
-                {
-                    cardScript.HiddenImage();
-                }
+            // else
+            // {
+            //     tmpCard[i] = Instantiate(cardDictionary["あ"], cardPositions[i]);
+            //     PasswordSelectionCard cardScript = tmpCard[i].GetComponent<PasswordSelectionCard>();
+            //     if (cardScript != null)
+            //     {
+            //         cardScript.HiddenImage();
+            //     }
 
-                spawnedCards.Add(tmpCard[i]);
-            }
-        }
-    }
-
-    /// <summary>
-    /// カードを1フレーム待機して裏返す
-    /// </summary>
-    IEnumerator DelayedFlip(PasswordSelectionCard card)
-    {
-        yield return null;
-        if (card != null && card.gameObject != null)
-        {
-            card.ShowImage();
+            //     spawnedCards.Add(tmpCard[i]);
+            // }
         }
     }
 
