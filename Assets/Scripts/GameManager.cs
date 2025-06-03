@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] FirewallCardController firewallCardPrefab;
     [SerializeField] EventCardController eventCardPrefab;
     [SerializeField] StarCardController starCardPrefab;
-    [SerializeField] PasswordCardController passwordCardPrefab;
+    [SerializeField] PasswordCardController enemyPasswordCardPrefab;
 
     //プレイヤーのパスワード入力フォーム
     [SerializeField] PasswordInputPanelAnimation playerPasswordInputPanel;
@@ -266,8 +266,6 @@ public class GameManager : MonoBehaviour
         InitHandCard();
 
         phase = PHASE.MULLIGAN;
-
-        // navigationMessagesManager.ShowNavigationMessage("あなたのマリガンフェーズです。\nいらないカードを捨ててください", 3f);
 
         //プレイヤーのマリガン
         yield return StartCoroutine(Mulligan());
@@ -1348,7 +1346,7 @@ public class GameManager : MonoBehaviour
         {
             CardController[] enemyHandCardList = GetPlayerHands(false);
             Destroy(enemyHandCardList[0].gameObject);
-            PasswordCardController passwordCard = Instantiate(passwordCardPrefab, enemyPasswordFieldTransform, false);
+            PasswordCardController passwordCard = Instantiate(enemyPasswordCardPrefab, enemyPasswordFieldTransform, false);
             passwordCard.Init(5, passwordManager.GetEnemyPasswordID(enemy.Password[i]), false);
             passwordCard.SetPasswordCharacter(enemy.Password[i]);
             passwordCard.SetCanViewHP(true);

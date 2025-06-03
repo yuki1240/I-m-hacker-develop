@@ -2054,7 +2054,7 @@ MonoBehaviour:
   firewallCardPrefab: {fileID: 4865101077773467591, guid: 6d5c5ca6b0fd44b58a6de056fa5113d1, type: 3}
   eventCardPrefab: {fileID: 738134079695509153, guid: 2a9de9d4349d2470cb9fb4cfff514b98, type: 3}
   starCardPrefab: {fileID: 4655963493547199168, guid: 3dfd80e8759744af187115a61a480ed9, type: 3}
-  passwordCardPrefab: {fileID: 6868963516114839669, guid: b6243e9944bec4834b51ba888f9d06de, type: 3}
+  enemyPasswordCardPrefab: {fileID: 6868963516114839669, guid: 4a9cd6b0736e28043a60297b50be9cfa, type: 3}
   playerPasswordInputPanel: {fileID: 163150868}
   passwordCardFieldTransform: {fileID: 755290085}
   phaseEndButton: {fileID: 944599588}
