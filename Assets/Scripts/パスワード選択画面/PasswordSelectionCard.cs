@@ -9,7 +9,8 @@ public class PasswordSelectionCard : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private Image frontImage;
     [SerializeField] private Image backImage;
-    [SerializeField] private float flipDuration = 1.0f;
+    [SerializeField] private float flipDuration = 0.5f;
+    [SerializeField] private Ease flipEase = Ease.InOutQuad;
 
     public bool isFaceUp = false;
     private bool isZoomed = false;
@@ -25,6 +26,10 @@ public class PasswordSelectionCard : MonoBehaviour, IPointerClickHandler
         cardScript = GetComponent<PasswordSelectionCard>();
         manager = GameObject.Find("PasswordSelectionCardManager").GetComponent<PasswordSelectionCardManager>();
         SetCardEntity();
+
+        // 初期状態では裏面を表示
+        frontImage.gameObject.SetActive(false);
+        backImage.gameObject.SetActive(true);
     }
 
     private void SetCardEntity()
@@ -57,7 +62,7 @@ public class PasswordSelectionCard : MonoBehaviour, IPointerClickHandler
     {
         if (!isFaceUp) return;
         isFaceUp = false;
-        Rotate(backImage, frontImage);
+        FlipCard(backImage, frontImage);
     }
 
     public void ShowImage()
@@ -65,19 +70,28 @@ public class PasswordSelectionCard : MonoBehaviour, IPointerClickHandler
         if (isFaceUp) return;
         isFaceUp = true;
         // initCardPos = transform.localPosition;
-        Rotate(frontImage, backImage);
+        FlipCard(frontImage, backImage);
     }
 
-    private void Rotate(Image showImage, Image hideImage)
+    private void FlipCard(Image showImage, Image hideImage)
     {
+        // 現在のアニメーションをキル
+        DOTween.Kill(transform);
+
+        // カードを90度回転させる（裏返し始める）
         transform.DOLocalRotate(new Vector3(0, 90, 0), flipDuration / 2)
+            .SetEase(flipEase)
             .OnComplete(() =>
             {
                 if (this != null && gameObject != null)
                 {
+                    // 画像の切り替え
                     hideImage.gameObject.SetActive(false);
                     showImage.gameObject.SetActive(true);
-                    transform.DOLocalRotate(new Vector3(0, 0, 0), flipDuration / 2);
+
+                    // カードを元の角度に戻す（表返し完了）
+                    transform.DOLocalRotate(new Vector3(0, 0, 0), flipDuration / 2)
+                        .SetEase(flipEase);
                 }
             });
     }
@@ -124,19 +138,16 @@ public class PasswordSelectionCard : MonoBehaviour, IPointerClickHandler
         }
 
         transform.parent.SetAsLastSibling();
-        transform.DOScale(zoomedScale, 0.5f);
+        transform.DOScale(zoomedScale, 0.5f).SetEase(Ease.OutQuad);
         StartCoroutine(ShowEplanationText());
     }
 
     public void ResetZoom()
     {
-        transform.DOLocalMove(originalPosition, 0f);
-        transform.DOScale(1, 0.5f).OnComplete(() =>
-        {
-            manager.zoomBackPanel.SetActive(false);
-            isZoomed = false;
-            manager.explanationText.text = string.Empty;
-        });
+        if (!isZoomed) return;
+        isZoomed = false;
+        transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InQuad);
+        manager.zoomBackPanel.SetActive(false);
     }
 
     private bool IsPointerOverUIObject()
@@ -148,5 +159,12 @@ public class PasswordSelectionCard : MonoBehaviour, IPointerClickHandler
         List<RaycastResult> results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
         return results.Count > 0;
+    }
+
+    public void SetCardStateWithoutAnimation(bool faceUp)
+    {
+        isFaceUp = faceUp;
+        frontImage.gameObject.SetActive(faceUp);
+        backImage.gameObject.SetActive(!faceUp);
     }
 }
