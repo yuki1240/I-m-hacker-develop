@@ -64,13 +64,16 @@ public class PasswordSelectionCardManager : MonoBehaviour
         {'ぱ', 5}, {'ぴ', 5}, {'ぷ', 5}, {'ぺ', 5}, {'ぽ', 5}
     };
 
-    void Start()
+    private void Start()
     {
         InitializeCardDictionary();
         SetupEventHandlers();
         StartCoroutine(InitializeCardsAfterAnimation());
     }
 
+    /// <summary>
+    /// カードのプレハブを辞書に登録し、説明文オブジェクトを取得
+    /// </summary>
     private void InitializeCardDictionary()
     {
         // プレハブリストを辞書に登録
@@ -83,6 +86,10 @@ public class PasswordSelectionCardManager : MonoBehaviour
         explanationText = zoomBackPanel.transform.Find("ExplanationText").GetComponent<TMP_Text>();
     }
 
+    /// <summary>
+    /// イベントハンドラーのセットアップ
+    /// ZoomBackPanelのクリックイベントと、入力フィールドの変更イベント、決定ボタンのクリックイベントを設定
+    /// </summary>
     private void SetupEventHandlers()
     {
         EventTrigger trigger = zoomBackPanel.AddComponent<EventTrigger>();
@@ -97,6 +104,10 @@ public class PasswordSelectionCardManager : MonoBehaviour
         submitButton.onClick.AddListener(OnSubmit);
     }
 
+    /// <summary>
+    /// PlayerPasswordInputFieldのアニメーション完了後にカードを初期化
+    /// </summary>
+    /// <returns></returns> <summary>
     private IEnumerator InitializeCardsAfterAnimation()
     {
         // PlayerPasswordInputFieldのアニメーション完了を待つ
@@ -265,6 +276,11 @@ public class PasswordSelectionCardManager : MonoBehaviour
         previousInput = newInput;
     }
 
+    /// <summary>
+    /// 入力された文字に基づいてカードを更新
+    /// 有効な母音グループを計算し、カードの状態を更新
+    /// </summary>
+    /// <param name="input"></param>
     private void UpdateCardsForInput(string input)
     {
         // 入力された文字から有効な母音グループを計算
@@ -333,6 +349,11 @@ public class PasswordSelectionCardManager : MonoBehaviour
         previousInput = input;
     }
 
+    /// <summary>
+    /// アニメーション完了後にカードの状態を更新
+    /// </summary>
+    /// <param name="currentCards"></param>
+    /// <returns></returns> <summary>
     private IEnumerator UpdateCardsAfterAnimation(List<int> currentCards)
     {
         // アニメーション完了を待つ
@@ -342,6 +363,10 @@ public class PasswordSelectionCardManager : MonoBehaviour
         UpdateCardStates(currentCards);
     }
 
+    /// <summary>
+    /// カードの状態を更新
+    /// </summary>
+    /// <param name="currentCards"></param> <summary>
     private void UpdateCardStates(List<int> currentCards)
     {
         for (int i = 0; i < 3; i++)
@@ -425,6 +450,11 @@ public class PasswordSelectionCardManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// カードのインデックスからカード名を取得
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns> <summary>
     private string GetCardNameFromIndex(int index)
     {
         switch (index)
@@ -443,6 +473,11 @@ public class PasswordSelectionCardManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 入力が有効なひらがなかどうかをチェック
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns> <summary>
     private bool IsValidHiraganaInput(string input)
     {
         return input.All(c => hiraganaToCardIndex.ContainsKey(c) || c == '\0');
