@@ -483,6 +483,12 @@ public class PasswordSelectionCardManager : MonoBehaviour
         return input.All(c => hiraganaToCardIndex.ContainsKey(c) || c == '\0');
     }
 
+    /// <summary>
+    /// 有効な母音グループの数を取得
+    /// 入力された文字列から、母音グループに対応するカードの数をカウント
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
     private int GetEffectiveLength(string input)
     {
         return input.Where(c => hiraganaToCardIndex.ContainsKey(c))
